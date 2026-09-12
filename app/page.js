@@ -28,13 +28,16 @@ export default function Dashboard() {
   const [autosTotal, setAutosTotal] = useState(0);
   const [ingresos, setIngresos] = useState(0);
   const [egresos, setEgresos] = useState(0);
+  const [ingresosHoy, setIngresosHoy] = useState(0);
+  const [egresosHoy, setEgresosHoy] = useState(0);
   const [cargando, setCargando] = useState(true);
 
   useEffect(() => {
     const cargar = async () => {
       setCargando(true);
       const hoy = new Date();
-      const mesActual = hoy.toISOString().slice(0, 7);
+      const hoyStr = hoy.toISOString().slice(0, 10);
+      const mesActual = hoyStr.slice(0, 7);
 
       const { count: cCount } = await supabase.from("clientes").select("*", { count: "exact", head: true });
       const { count: aCount } = await supabase.from("autos").select("*", { count: "exact", head: true });
@@ -51,12 +54,16 @@ export default function Dashboard() {
 
       const ing = (movs || []).filter((m) => m.tipo === "ingreso").reduce((a, b) => a + Number(b.monto), 0);
       const egr = (movs || []).filter((m) => m.tipo === "egreso").reduce((a, b) => a + Number(b.monto), 0);
+      const ingHoy = (movs || []).filter((m) => m.tipo === "ingreso" && m.fecha === hoyStr).reduce((a, b) => a + Number(b.monto), 0);
+      const egrHoy = (movs || []).filter((m) => m.tipo === "egreso" && m.fecha === hoyStr).reduce((a, b) => a + Number(b.monto), 0);
 
       setClientesCount(cCount || 0);
       setAutosTotal(aCount || 0);
       setAutosEnTaller(aTallerCount || 0);
       setIngresos(ing);
       setEgresos(egr);
+      setIngresosHoy(ingHoy);
+      setEgresosHoy(egrHoy);
       setCargando(false);
     };
     cargar();
@@ -72,6 +79,8 @@ export default function Dashboard() {
           <Kpi label="Autos en taller" value={autosEnTaller} tone={COLORS.accent} sub={`${autosTotal} en total`} />
           <Kpi label="Ingresos (mes)" value={fmt(ingresos)} tone={COLORS.income} />
           <Kpi label="Egresos (mes)" value={fmt(egresos)} tone={COLORS.expense} />
+          <Kpi label="Ingresos (hoy)" value={fmt(ingresosHoy)} tone={COLORS.income} />
+          <Kpi label="Egresos (hoy)" value={fmt(egresosHoy)} tone={COLORS.expense} />
         </div>
       )}
     </Shell>
