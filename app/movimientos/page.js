@@ -158,7 +158,14 @@ export default function MovimientosPage() {
           style={{ ...inputStyle, colorScheme: "dark" }}
         />
         <input value={concepto} onChange={(e) => setConcepto(e.target.value)} placeholder="Concepto" style={{ ...inputStyle, flex: 1, minWidth: 140 }} />
-        <input value={monto} onChange={(e) => setMonto(e.target.value)} placeholder="Monto" type="number" style={{ ...inputStyle, width: 120 }} />
+        <input
+          value={monto}
+          onChange={(e) => setMonto(e.target.value)}
+          placeholder="Monto"
+          type="number"
+          inputMode="decimal"
+          style={{ ...inputStyle, width: 120 }}
+        />
         <button
           onClick={agregar}
           style={{ display: "flex", alignItems: "center", gap: 6, background: COLORS.accent, color: "#1A1204", border: "none", borderRadius: 6, padding: "8px 14px", fontSize: 14, ...HEAD }}
@@ -169,6 +176,7 @@ export default function MovimientosPage() {
       <div style={{ fontSize: 12, color: COLORS.steel, marginBottom: 16, ...MONO }}>
         Se va a registrar con fecha: {fechaForm}
       </div>
+
       {cargando ? (
         <div style={{ color: COLORS.textMuted, fontSize: 14 }}>Cargando...</div>
       ) : (
@@ -190,7 +198,13 @@ export default function MovimientosPage() {
                 </select>
                 <input type="date" value={editFecha} onChange={(e) => setEditFecha(e.target.value)} style={{ ...inputStyle, colorScheme: "dark" }} />
                 <input value={editConcepto} onChange={(e) => setEditConcepto(e.target.value)} style={{ ...inputStyle, flex: 1, minWidth: 120 }} />
-                <input value={editMonto} onChange={(e) => setEditMonto(e.target.value)} type="number" style={{ ...inputStyle, width: 110 }} />
+                <input
+                  value={editMonto}
+                  onChange={(e) => setEditMonto(e.target.value)}
+                  type="number"
+                  inputMode="decimal"
+                  style={{ ...inputStyle, width: 110 }}
+                />
                 <button onClick={() => guardarEdicion(m.id)} style={{ background: COLORS.accent, color: "#1A1204", border: "none", borderRadius: 6, padding: 8 }}>
                   <Check size={15} />
                 </button>
