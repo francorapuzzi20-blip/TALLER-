@@ -145,12 +145,18 @@ export default function MovimientosPage() {
         <Kpi label="Balance" value={fmt(ingresos - egresos)} />
       </div>
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16, background: COLORS.panel, border: `1px solid ${COLORS.border}`, borderRadius: 8, padding: 12 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 6, background: COLORS.panel, border: `1px solid ${COLORS.border}`, borderRadius: 8, padding: 12 }}>
         <select value={tipo} onChange={(e) => setTipo(e.target.value)} style={inputStyle}>
           <option value="ingreso">Ingreso</option>
           <option value="egreso">Egreso</option>
         </select>
-        <input type="date" value={fechaForm} onChange={(e) => setFechaForm(e.target.value)} style={{ ...inputStyle, colorScheme: "dark" }} />
+        <input
+          type="date"
+          value={fechaForm}
+          onChange={(e) => setFechaForm(e.target.value)}
+          onInput={(e) => setFechaForm(e.target.value)}
+          style={{ ...inputStyle, colorScheme: "dark" }}
+        />
         <input value={concepto} onChange={(e) => setConcepto(e.target.value)} placeholder="Concepto" style={{ ...inputStyle, flex: 1, minWidth: 140 }} />
         <input value={monto} onChange={(e) => setMonto(e.target.value)} placeholder="Monto" type="number" style={{ ...inputStyle, width: 120 }} />
         <button
@@ -160,7 +166,9 @@ export default function MovimientosPage() {
           <Plus size={15} /> Registrar
         </button>
       </div>
-
+      <div style={{ fontSize: 12, color: COLORS.steel, marginBottom: 16, ...MONO }}>
+        Se va a registrar con fecha: {fechaForm}
+      </div>
       {cargando ? (
         <div style={{ color: COLORS.textMuted, fontSize: 14 }}>Cargando...</div>
       ) : (
