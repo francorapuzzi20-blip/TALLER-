@@ -54,6 +54,13 @@ export default function AutosPage() {
     }
   };
 
+  const toggleEstado = async (auto) => {
+    const nuevoEstado = auto.estado === "En taller" ? "Entregado" : "En taller";
+    const { error } = await supabase.from("autos").update({ estado: nuevoEstado }).eq("id", auto.id);
+    if (!error) cargar();
+    else alert("Error al actualizar: " + error.message);
+  };
+
   const inputStyle = {
     background: COLORS.panel,
     border: `1px solid ${COLORS.border}`,
@@ -106,7 +113,23 @@ export default function AutosPage() {
                 </div>
                 <div style={{ fontSize: 12, color: COLORS.textMuted }}>{a.clientes?.nombre || "Sin dueño asignado"}</div>
               </div>
-              <div style={{ ...MONO, color: COLORS.accent, fontSize: 13 }}>{a.placa}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ ...MONO, color: COLORS.accent, fontSize: 13 }}>{a.placa}</div>
+                <button
+                  onClick={() => toggleEstado(a)}
+                  style={{
+                    ...MONO,
+                    fontSize: 12,
+                    padding: "6px 10px",
+                    borderRadius: 6,
+                    border: `1px solid ${a.estado === "En taller" ? COLORS.accent : COLORS.border}`,
+                    background: a.estado === "En taller" ? COLORS.accentDim : "transparent",
+                    color: a.estado === "En taller" ? COLORS.accent : COLORS.textMuted,
+                  }}
+                >
+                  {a.estado || "Entregado"}
+                </button>
+              </div>
             </div>
           ))}
         </div>
