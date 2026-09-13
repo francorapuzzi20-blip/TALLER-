@@ -1,11 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { supabase } from "../lib/supabaseClient";
 import { COLORS, HEAD, MONO, fmt } from "../lib/theme";
 import Shell from "../components/Shell";
 
-function Kpi({ label, value, tone }) {
-  return (
+function Kpi({ label, value, tone, href }) {
+  const content = (
     <div
       style={{
         background: COLORS.panel,
@@ -14,12 +15,14 @@ function Kpi({ label, value, tone }) {
         padding: 16,
         flex: 1,
         minWidth: 150,
+        cursor: href ? "pointer" : "default",
       }}
     >
       <div style={{ fontSize: 12, color: COLORS.textMuted, marginBottom: 8, ...HEAD }}>{label}</div>
       <div style={{ fontSize: 22, color: tone || COLORS.text, ...MONO }}>{value}</div>
     </div>
   );
+  return href ? <Link href={href}>{content}</Link> : content;
 }
 
 export default function Dashboard() {
@@ -76,7 +79,7 @@ export default function Dashboard() {
       ) : (
         <div className="flex" style={{ flexWrap: "wrap", gap: 12 }}>
           <Kpi label="Clientes" value={clientesCount} />
-          <Kpi label="Autos en taller" value={autosEnTaller} tone={COLORS.accent} sub={`${autosTotal} en total`} />
+          <Kpi label="Autos en taller" value={autosEnTaller} tone={COLORS.accent} href="/autos" />
           <Kpi label="Ingresos (mes)" value={fmt(ingresos)} tone={COLORS.income} />
           <Kpi label="Egresos (mes)" value={fmt(egresos)} tone={COLORS.expense} />
           <Kpi label="Ingresos (hoy)" value={fmt(ingresosHoy)} tone={COLORS.income} />
