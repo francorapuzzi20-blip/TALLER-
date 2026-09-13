@@ -1,13 +1,14 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { LayoutGrid, Users, Car, Wallet, Wrench } from "lucide-react";
+import { LayoutGrid, Users, Car, Wallet, Wrench, CalendarClock } from "lucide-react";
 import { COLORS, HEAD } from "../lib/theme";
 
 const ITEMS = [
   { href: "/", label: "Panel general", icon: LayoutGrid },
   { href: "/clientes", label: "Clientes", icon: Users },
   { href: "/autos", label: "Autos", icon: Car },
+  { href: "/turnos", label: "Turnos", icon: CalendarClock },
   { href: "/movimientos", label: "Ingresos y egresos", icon: Wallet },
 ];
 
